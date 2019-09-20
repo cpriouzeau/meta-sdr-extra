@@ -1,0 +1,39 @@
+This layer depends on:
+
+URI: git://github.com/openembedded/openembedded-core.git
+branch: master
+revision: HEAD
+
+URI: git://github.com/openembedded/meta-openembedded.git
+branch: master
+revision: HEAD
+
+URI: git://git.yoctoproject.org/meta-qt5
+branch: master
+revision: HEAD
+
+URI: https://github.com/balister/meta-sdr.git
+branch: master
+revision: HEAD
+
+
+From meta-openembedded, you need the following layers:
+meta-oe
+meta-filesystems
+meta-networking
+meta-python
+
+
+Additional configuration to add on local.conf:
+FORTRAN_forcevariable = ",fortran"
+RUNTIMETARGET_append_pn-gcc-runtime = " libquadmath"
+
+
+Generate image + configuration:
+-------------------------------
+$> bitbake-layers add-layer <path to layer>/meta-sdr
+$> bitbake-layers add-layer <path to layer>/meta-sdr-extra
+$> bitbake sdr-extra-image
+
+
+
