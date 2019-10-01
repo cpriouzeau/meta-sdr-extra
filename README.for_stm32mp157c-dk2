@@ -1,0 +1,36 @@
+For STM32mp157c-dk2:
+
+ mkdir -p openstlinux-sdr/layers
+ cd openstlinux-sdr/layers
+
+ git clone https://github.com/openembedded/openembedded-core.git -b warrior
+ cd openembedded-core
+ git clone https://github.com/openembedded/bitbake.git -b 1.42
+ cd ..
+ git clone https://github.com/openembedded/meta-openembedded.git -b warrior
+ git clone https://github.com/meta-qt5/meta-qt5.git -b warrior
+ git clone https://github.com/balister/meta-sdr.git -b master
+ git clone https://github.com/cpriouzeau/meta-sdr-extra.git -b master
+ git clone https://github.com/STMicroelectronics/meta-st-stm32mp -b warrior
+
+ cd ..
+
+ source layers/openembedded-core/oe-init-build-env build-sdr
+ bitbake-layers add-layer ../layers/meta-openembedded/meta-oe/
+ bitbake-layers add-layer ../layers/meta-openembedded/meta-python/
+ bitbake-layers add-layer ../layers/meta-openembedded/meta-filesystems/
+ bitbake-layers add-layer ../layers/meta-openembedded/meta-networking/
+ bitbake-layers add-layer ../layers/meta-qt5/
+ bitbake-layers add-layer ../layers/meta-sdr
+ bitbake-layers add-layer ../layers/meta-sdr-extra/
+ bitbake-layers add-layer ../layers/meta-st-stm32mp/
+ 
+
+ echo "FORTRAN_forcevariable = \",fortran\" " >> conf/local.conf
+ echo "RUNTIMETARGET_append_pn-gcc-runtime = \" libquadmath\"" >> conf/local.conf
+ echo "MACHINE = \"stm32mp1\" " >> conf/local.conf
+
+ bitbake sdr-extra-image
+
+For flashing, follow the wiki:
+	https://wiki.st.com/stm32mpu
